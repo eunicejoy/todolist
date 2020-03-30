@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Task;
+use App\User;
 use Validator;
 use DB;
+use Carbon\Carbon;
 
 class TaskController extends Controller
 {
@@ -16,9 +18,11 @@ class TaskController extends Controller
 
     public function index(Request $request)
     {
-        $tasks = Task::where('user_id',$request->user()->id)->orderBy('created_at','desc')->paginate(5);
+        $tasks = Task::where('user_id',$request->user()->id)->where('is_finished','0')->orderBy('created_at','desc')->paginate(5);
 
-        return view('tasks.index', compact('tasks'));
+        $tasks_done = Task::where('user_id',$request->user()->id)->where('is_finished','1')->orderBy('created_at','desc')->paginate(5);
+
+        return view('tasks.index', compact('tasks','tasks_done'));
     }
 
     public function store(Request $request)
@@ -57,6 +61,16 @@ class TaskController extends Controller
         $task  = $request->task;
 
         DB::update('update tasks set name = ? where id = ?',[$task,$id]);
+        return redirect ('/');
+    }
+
+    public function finished(Request $request)
+    {
+        $finished_at = Carbon::now()->toDateTimeString();
+        $id = $request->id;
+
+        DB::update('update tasks set is_finished = 1, finished_at = ? where id = ?',[$finished_at, $id]);
+
         return redirect ('/');
     }
 }

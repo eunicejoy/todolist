@@ -21,3 +21,4 @@ Route::get('/','TaskController@index');
 Route::post('/task','TaskController@store');
 Route::delete('/task/{task}','TaskController@destroy');
 Route::patch('/update', 'TaskController@update');
+Route::patch('/finished/{id}', 'TaskController@finished');

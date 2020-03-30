@@ -12,15 +12,46 @@
                 <form action="/task" method="post">
                     @csrf
                   <div class="form-group">
-                    <label for="task">Task</label>
                     <input type="text" name="taskname" id="taskname" class="form-control">
                   </div>
                   <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Add Task</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
                   </div>
                 </form>
               </div>
             </div>
+            <hr>
+            <div class="card text-left">
+                <div class="card-header">
+                    <h4>Finished Tasks</h4>
+                </div>
+                <div class="card-body">
+                    @if ($tasks_done->count() > 0)
+                            @foreach ($tasks_done as $task_done)
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <h5>{{ $task_done->name }}</h5>
+                                    <span class="offset-sm-5"><small>finished at: <i>{{$task_done->finished_at}}</i></small></span>
+                                </div>
+                                <div class="col-sm-2">
+                                    <form action="/task/{{$task_done->id}}" method="post">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <hr>
+                            @endforeach
+                    @else
+                    <p>No task yet.</p>
+                    @endif
+
+                    <div>
+                        {{ $tasks->links()}}
+                    </div>
+                </div>
+              </div>
         </div>
         <div class="col-sm-6">
             <div class="card text-left">
@@ -29,47 +60,40 @@
                 </div>
                 <div class="card-body">
                     @if ($tasks->count() > 0)
-                    <table class="table table-striped task-table">
-                        <thead>
-                            <th>Task</th>
-                            <th>&nbsp;</th>
-                            <th>&nbsp;</th>
-                        </thead>
-                        <tbody>
                             @foreach ($tasks as $task)
-                                <tr>
-                                    <td class="table-text">
-                                        <div>{{ $task->name }}</div>
-                                    </td>
-                                    <td>
-                                        <button type="button"
-                                         class="btn btn-success"
-                                         data-target="#editModal"
-                                         data-toggle="modal"
-                                         data-taskid= {{$task->id}}
-                                         data-name="{{$task->name}}">Edit</button>
-                                    </td>
-                                    <td>
-                                        <form action="/task/{{$task->id}}" method="post">
-                                            @method('DELETE')
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
 
+                            <div class="row">
+
+                                <div class="col-sm-8">
+                                    <h5>{{ $task->name }}</h5>
+                                    <span class="offset-sm-5"><small>created at: <i>{{$task->created_at}}</i></small></span>
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <button type="button"
+                                    class="btn btn-success"
+                                    data-target="#editModal"
+                                    data-toggle="modal"
+                                    data-taskid= {{$task->id}}
+                                    data-name="{{$task->name}}">Edit</button>
+                                </div>
+
+                                <div class="col-sm-2">
+                                    <form action="/finished/{{$task->id}}" method="post">
+                                    @method('PATCH')
+                                    @csrf
+                                    <button type="submit" class="btn btn-warning">Done</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <hr>
                             @endforeach
-                        </tbody>
-                    </table>
                     @else
                     <p>No task yet.</p>
                     @endif
-
-
                     <div>
                         {{ $tasks->links()}}
                     </div>
-
                 </div>
               </div>
         </div>

@@ -6,8 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    protected $fillable = ['name'];
+    protected $guarded = [];
 
+    protected $attributes = [
+        'is_finished' => 0,
+        'finished_at' => ''
+    ];
     public function user()
     {
         return $this->belongsTo(User::class);
