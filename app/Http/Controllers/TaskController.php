@@ -60,7 +60,10 @@ class TaskController extends Controller
         $id = $request->taskid;
         $task  = $request->task;
 
-        DB::update('update tasks set name = ? where id = ?',[$task,$id]);
+        $task_updated = Task::updateorCreate(['id' => $id],
+        ['name' => $task ]
+        );
+
         return redirect ('/');
     }
 
@@ -69,7 +72,9 @@ class TaskController extends Controller
         $finished_at = Carbon::now()->toDateTimeString();
         $id = $request->id;
 
-        DB::update('update tasks set is_finished = 1, finished_at = ? where id = ?',[$finished_at, $id]);
+        $task_finished= Task::updateorCreate(['id' => $id], //where
+        ['is_finished' => 1, 'finished_at' => $finished_at] //set
+        );
 
         return redirect ('/');
     }

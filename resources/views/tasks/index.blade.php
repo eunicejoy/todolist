@@ -43,13 +43,20 @@
                             </div>
                             <hr>
                             @endforeach
+
+                            <div>
+                                {{ $tasks->links()}}
+                            </div>
                     @else
                     <p>No task yet.</p>
                     @endif
 
-                    <div>
-                        {{ $tasks->links()}}
-                    </div>
+
+
+                    <details>
+                        <summary>Click Here</summary>
+                        Stay home and keep safe!
+                    </details>
                 </div>
               </div>
         </div>
@@ -128,7 +135,6 @@
       </div>
     </div>
   </div>
-
 
   <script type="application/javascript">
     $(document).ready(function(){
