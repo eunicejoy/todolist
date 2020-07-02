@@ -44,15 +44,12 @@
                             <hr>
                             @endforeach
 
-                            <div>
-                                {{ $tasks->links()}}
-                            </div>
+                           <!-- <div>
+                             {{-- {{ $tasks->links()}} --}}
+                            </div> !-->
                     @else
                     <p>No task yet.</p>
                     @endif
-
-
-
                     <details>
                         <summary>Click Here</summary>
                         Stay home and keep safe!
@@ -68,7 +65,6 @@
                 <div class="card-body">
                     @if ($tasks->count() > 0)
                             @foreach ($tasks as $task)
-
                             <div class="row">
 
                                 <div class="col-sm-8">
@@ -95,12 +91,15 @@
                             </div>
                             <hr>
                             @endforeach
+
+                            <div>
+                                {{ $tasks->links()}}
+                            </div>
+
                     @else
                     <p>No task yet.</p>
                     @endif
-                    <div>
-                        {{ $tasks->links()}}
-                    </div>
+
                 </div>
               </div>
         </div>
